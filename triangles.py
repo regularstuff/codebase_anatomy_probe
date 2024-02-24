@@ -1,4 +1,4 @@
-"""Four ways to get triancle nbs"""
+"""Four ways to get triangle nbs"""
 
 def tri1(n):
     total = 0

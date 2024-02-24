@@ -1,7 +1,7 @@
 import pickle
 import spiller
 
-SPILLFILE = "/tmp/trace_spill.pickle"
+SPILLFILE = "/tmp/spill1.pickle"
 
 def func_file(item):
     return item["file_name"], item["function_name"]
