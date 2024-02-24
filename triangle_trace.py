@@ -7,7 +7,7 @@ import triangles
 
 SPILLFILE = "/tmp/trace_spill.pickle"
 
-mytrace = spiller.Spiller()
+mytrace = spiller.Spiller(include_code=False)
 mytrace.start()
 result2 = triangles.tri2(3)
 if result2 > 0:

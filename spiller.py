@@ -8,8 +8,9 @@ import time
 
 class Spiller:
 
-    def __init__(self):
+    def __init__(self, include_code=True):
         self.spilled = []
+        self.include_code = include_code
         self.event_number = itertools.count()
 
 
@@ -20,7 +21,7 @@ class Spiller:
         for x in self.spilled:
             yield x
     def trace(self, frame, event, args):
-        frame.f_trace_opcodes = True
+        frame.f_trace_opcodes = self.include_code
         self.accumulate(frame, event, args)
         return self.trace
 
@@ -37,7 +38,7 @@ class Spiller:
                   "code": frame.f_code,
                  "line": frame.f_lineno,
                  "event": event,
-                 "time": time.perf_counter()
+                 "time": time.perf_counter_ns()
                  }
         if event == "opcode":
             thing["opcode"] = frame.f_code.co_code[frame.f_lasti]
