@@ -16,6 +16,9 @@ class Spiller:
     def report(self):
         return self.spilled
 
+    def analysis_items(self):
+        for x in self.spilled:
+            yield x
     def trace(self, frame, event, args):
         frame.f_trace_opcodes = True
         self.accumulate(frame, event, args)
