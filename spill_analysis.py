@@ -39,12 +39,12 @@ class SpillAnalyser:
         for cur in timings:
             if cur.event == "call":
                 state = 'Accumulating'
+            if prev.event == "line" and cur.event in ["line", "return"] and state=='Accumulating':
+                cumulative += cur.time - prev.time
             if cur.event == "return":
                 state='Returning'
                 list_of_cumulative.append(cumulative)
                 cumulative = 0
-            if prev.event == "line" and cur.event == "line" and state=='Accumulating':
-                cumulative += cur.time - prev.time
             prev = cur
         return list_of_cumulative, statistics.mean(list_of_cumulative)
 
