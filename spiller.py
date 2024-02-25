@@ -26,10 +26,10 @@ class Spiller:
         return self.trace
 
 
-    def start(self):
+    def start_spill(self):
         sys.settrace(self.trace)
 
-    def stop(self):
+    def stop_spill(self):
         sys.settrace(None)
 
     def accumulate(self, frame, event, args):
@@ -44,10 +44,14 @@ class Spiller:
             thing["opcode"] = frame.f_code.co_code[frame.f_lasti]
         self.spilled.append(thing)
 
-    def save_spillfile(self, save_name):
+    def save_spillfile(self, save_name, keep_stop=False):
         savable = []
         for trace_item in self.spilled:
+            if trace_item["code"].co_name == "stop_spill" and not keep_stop:
+                break
             pickleable = copy.deepcopy(trace_item)
+
+            # code type is not pickleable
             del pickleable["code"]
             pickleable["function_name"] = trace_item["code"].co_name
             pickleable["file_name"] = trace_item["code"].co_filename

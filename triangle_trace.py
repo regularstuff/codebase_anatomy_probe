@@ -8,7 +8,7 @@ import triangles
 SPILLFILE = "/tmp/trace_spill.pickle"
 
 mytrace = spiller.Spiller(include_code=False)
-mytrace.start()
+mytrace.start_spill()
 result2 = triangles.tri2(3)
 if result2 > 0:
     result1 = triangles.tri1(3)
@@ -32,7 +32,7 @@ for x in 4, 5, 6:
     prev = x
 
 
-mytrace.stop()
+mytrace.stop_spill()
 mytrace.save_spillfile(SPILLFILE)
 
 
