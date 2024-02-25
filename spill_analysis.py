@@ -1,6 +1,7 @@
 import pickle
 import spiller
 from collections import namedtuple
+import statistics
 
 
 
@@ -32,13 +33,20 @@ class SpillAnalyser:
 
         prev = timed_line(line_no=0, event=None, time=None, func=None, file=None)
         cumulative = 0
+        list_of_cumulative = []
+
+        state = ''
         for cur in timings:
             if cur.event == "call":
-                print("I seen a new function!")
+                state = 'Accumulating'
             if cur.event == "return":
-                print("I seen a return")
-            if prev.event == "line" and cur.event == "line":
+                state='Returning'
+                list_of_cumulative.append(cumulative)
+                cumulative = 0
+            if prev.event == "line" and cur.event == "line" and state=='Accumulating':
                 cumulative += cur.time - prev.time
+            prev = cur
+        return list_of_cumulative, statistics.mean(list_of_cumulative)
 
 
 
